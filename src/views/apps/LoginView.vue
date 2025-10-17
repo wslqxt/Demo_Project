@@ -8,7 +8,7 @@ import { ro } from 'element-plus/es/locales.mjs';
 import { useStore } from 'vuex';
 import instance from '@/axios/instance';
 /* const areas:*/
-import {login} from '@/api/userAPI.js'
+import { login } from '@/api/userAPI.js'
 const router = useRouter();
 const store = useStore();
 const form = ref({
@@ -18,25 +18,26 @@ const form = ref({
 const msg = ref('');
 // import { login } from "@/axios/requestApp.js";  // 确保路径正确
 // ... 其他导入 (store, router, ElMessage, form, msg)
-const handleLogin = async() => {
-  const {username, password} = form.value;
-  try {
-    const res= await login({username, password});
-    const {data}=res;
-    store.commit('User/setTokenAndUsername', { token: data.token, username: username });
-    router.push({name:'HomeFrame'});
-  } catch (error) {
-    const {msg, code}=error;
-    if(code===201) {
-      form.value.password = '';
-      console.log("密码错误");
-    } else if(code===202) {
-      router.push({ path: '/register' });
-    } else {
-      msg.value = msg || '登录失败，请重试';
-      console.log("登录失败，请重试");
+const handleLogin = async () => {
+
+    const { username, password } = form.value;
+    try {
+        const res = await login({ username, password });
+        const { data } = res;
+        store.commit('User/setTokenAndUsername', { token: data.token, username: username });
+        router.push({ name: 'HomeFrame' });
+    } catch (error) {
+        const { msg, code } = error;
+        if (code === 201) {
+            form.value.password = '';
+            console.log("密码错误");
+        } else if (code === 202) {
+            router.push({ path: '/register' });
+        } else {
+            msg.value = msg || '登录失败，请重试';
+            console.log("登录失败，请重试");
+        }
     }
-  }
 };
 const handleReset = () => {
     msg.value = "";
