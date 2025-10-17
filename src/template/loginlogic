@@ -1,0 +1,80 @@
+const handleLogin = () => {
+    // instance({url:'/login',method='post',data:form.value})
+    // .then((res)=>{
+    //     console.log(res);
+    //     const {msg,code,data}=res.data;
+    //     login(form.value).then((res)=>{if(res.code===200){
+    //         let payload={
+    //             token:res.data.token,
+    //             username:res.data.username
+    //         }
+    //         form.value.password='';
+    //         form.value.username='';
+    //         msg.value=`${res.msg},请重新注册`;
+    //         // console.log('错误消息:',res.data.msg);
+    //         // // ElMessage.error(msg);
+    //         // router.push({path:'/register'});
+    //     }
+    // }).catch((err)=>{
+    //     // console.log("请求失败")
+    //     msg.value="操作异常";
+    // })
+
+
+
+    let params = {
+        username: form.value.username,
+        password: form.value.password,
+        id: form.value.id
+    }
+    console.log(form)
+    // 发送登录请求到后端服务器
+    //const x=axios.get('/config_cross_area_api/hel')
+    //const x=axios.get('/config_cross_area_api/hel',{params})
+    /*const x=axios({
+     url:'/config_cross_area_api/hel',
+     params,
+     method:'get'
+    }
+    )*/
+    /*let method='post'
+    const x=axios({
+      url: '/config_cross_area_api/ha',
+      data:params,
+      method
+    })*/
+    const x = axios.post('/config_cross_area_api/ha', params)
+    x.then((res) => {
+        const { msg, code, data } = res.data;
+        if (code === 200) {
+
+
+            store.commit('User/setTokenAndUsername', { token: data.token, username: params.username });
+            router.push({name:'HomeFrame'});
+            // store.commit('User/setUsername', params.username);
+
+            //保存用户相关信息和token(本地和应用程序中)
+            //页面跳转到系统首页
+            //router.push('/');
+        } else if (code === 201) {
+            console.log('错误消息:', res.data.msg);
+            form.value.password = '';
+            ElMessage.error(res.data.msg);
+        } else if (code === 202) {
+            console.log('错误消息:', res.data.msg);
+            ElMessage.error(msg);
+            router.push({ path: '/register' });
+        }
+
+    }).catch((err) => {
+        console.log("请求失败")
+    })
+}    //         store.commit('User/setTokenAndUsername',payload);
+    //         router.push({name:'HomeFrame'});
+    //     }else if(code===201){
+    //         console.log('错误消息:',res.data.msg);
+    //         form.value.password='';
+    //         form.value.username='';
+    //         // ElMessage.error(res.data.msg);
+    //         msg.value=`${res.msg},请重新输入密码`;
+    //     }else if(code===202){
