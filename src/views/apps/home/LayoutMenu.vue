@@ -3,7 +3,7 @@ import { ro } from "element-plus/es/locales.mjs";
 
 var menus = [
   {
-    index: 1,
+    index: "1",
     title: "课程实训",
     icon: "Odometer",
     // icon:' ',
@@ -14,7 +14,7 @@ var menus = [
     ],
   },
   {
-    index: 2,
+    index: "2",
     title: "专业实习",
     icon: "Coordinate",
     // icon:' ',
@@ -24,7 +24,7 @@ var menus = [
     ],
   },
   {
-    index: 3,
+    index: "3",
     title: "毕业设计",
     icon: "School",
     // icon:' ',
@@ -37,7 +37,7 @@ var menus = [
     ],
   },
   {
-    index: 4,
+    index: "4",
     title: "临时测试",
     icon: "Orange",
     // icon:' ',

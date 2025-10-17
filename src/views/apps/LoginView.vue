@@ -8,7 +8,7 @@ import { ro } from 'element-plus/es/locales.mjs';
 import { useStore } from 'vuex';
 import instance from '@/axios/instance';
 /* const areas:*/
-
+import {login} from '@/api/userAPI.js'
 const router = useRouter();
 const store = useStore();
 const form = ref({
@@ -16,52 +16,27 @@ const form = ref({
     password: '123'
 })
 const msg = ref('');
-import { login } from "@/axios/requestApp.js";  // 确保路径正确
+// import { login } from "@/axios/requestApp.js";  // 确保路径正确
 // ... 其他导入 (store, router, ElMessage, form, msg)
-
-const handleLogin = () => {
-  login(form.value)
-    .then((res) => {
-      // 关键修复：后端数据在 res.data 中
-    //   const { code, msg: serverMsg, data } = res.data || {};  // 防 res.data undefined
-      const { code, msg, data } = res.data;
-      if (code === 200) {
-        let payload = {
-          token: data.token,  // 假设 data: { token: 'xxx' }
-          username: form.value.username,
-        };
-        store.commit("User/setTokenAndUsername", payload);
-        router.push("/");
-        ElMessage.success("登录成功");
-      } else if (code === 201) {
-        form.value.password = '';
-        form.value.username = '';
-        msg.value = `${msg}, 请重新输入！！！`;
-        ElMessage.error(msg.value);
-      } else {
-        form.value.password = '';
-        form.value.username = '';
-        msg.value = `异常业务：${msg}`;
-        ElMessage.error(msg.value);
-      }
-    })
-    .catch((err) => {
-      console.error('登录请求失败详情:', err);  // 增强日志：查看 err.response / err.message
-      msg.value = "操作异常";
-
-      // 可选：更友好错误提示
-      if (err.response) {
-        // 服务器响应了，但状态码异常（如 404/500）
-        msg.value += ` (状态: ${err.response.status})`;
-      } else if (err.request) {
-        // 请求发出但无响应（网络/服务器宕机）
-        msg.value += " (网络错误，请检查连接)";
-      } else {
-        // 配置错误
-        msg.value += ` (配置错误: ${err.message})`;
-      }
-      ElMessage.error(msg.value);
-    });
+const handleLogin = async() => {
+  const {username, password} = form.value;
+  try {
+    const res= await login({username, password});
+    const {data}=res;
+    store.commit('User/setTokenAndUsername', { token: data.token, username: username });
+    router.push({name:'HomeFrame'});
+  } catch (error) {
+    const {msg, code}=error;
+    if(code===201) {
+      form.value.password = '';
+      console.log("密码错误");
+    } else if(code===202) {
+      router.push({ path: '/register' });
+    } else {
+      msg.value = msg || '登录失败，请重试';
+      console.log("登录失败，请重试");
+    }
+  }
 };
 const handleReset = () => {
     msg.value = "";

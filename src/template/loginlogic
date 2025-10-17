@@ -78,3 +78,82 @@ const handleLogin = () => {
     //         // ElMessage.error(res.data.msg);
     //         msg.value=`${res.msg},请重新输入密码`;
     //     }else if(code===202){
+
+
+
+     // let params = {
+  //       username: form.value.username,
+  //       password: form.value.password,
+  //       // id: form.value.id
+  //   }
+  //   console.log(form)
+  //   const x=login(params);
+  //   x.then((res) => {
+  //       const { msg, code, data } = res;
+  //       if (code === 200) {
+  //           store.commit('User/setTokenAndUsername', { token: data.token, username: params.username });
+  //           router.push({name:'HomeFrame'});
+  //           // store.commit('User/setUsername', params.username);
+
+  //           //保存用户相关信息和token(本地和应用程序中)
+  //           //页面跳转到系统首页
+  //           //router.push('/');
+  //       } else if (code === 201) {
+  //           console.log('错误消息:', res.data.msg);
+  //           form.value.password = '';
+  //           ElMessage.error(res.data.msg);
+  //       } else if (code === 202) {
+  //           console.log('错误消息:', res.data.msg);
+  //           ElMessage.error(msg);
+  //           router.push({ path: '/register' });
+  //       }
+
+  //   }).catch((err) => {
+  //       console.log("请求失败")
+  //   })
+
+
+
+
+  // login_x(form.value)
+  //   .then((res) => {
+  //     // 关键修复：后端数据在 res.data 中
+  //   //   const { code, msg: serverMsg, data } = res.data || {};  // 防 res.data undefined
+  //     const { code, msg, data } = res.data;
+  //     if (code === 200) {
+  //       let payload = {
+  //         token: data.token,  // 假设 data: { token: 'xxx' }
+  //         username: form.value.username,
+  //       };
+  //       store.commit("User/setTokenAndUsername", payload);
+  //       router.push("/");
+  //       ElMessage.success("登录成功");
+  //     } else if (code === 201) {
+  //       form.value.password = '';
+  //       form.value.username = '';
+  //       msg.value = `${msg}, 请重新输入！！！`;
+  //       ElMessage.error(msg.value);
+  //     } else {
+  //       form.value.password = '';
+  //       form.value.username = '';
+  //       msg.value = `异常业务：${msg}`;
+  //       ElMessage.error(msg.value);
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     console.error('登录请求失败详情:', err);  // 增强日志：查看 err.response / err.message
+  //     msg.value = "操作异常";
+
+  //     // 可选：更友好错误提示
+  //     if (err.response) {
+  //       // 服务器响应了，但状态码异常（如 404/500）
+  //       msg.value += ` (状态: ${err.response.status})`;
+  //     } else if (err.request) {
+  //       // 请求发出但无响应（网络/服务器宕机）
+  //       msg.value += " (网络错误，请检查连接)";
+  //     } else {
+  //       // 配置错误
+  //       msg.value += ` (配置错误: ${err.message})`;
+  //     }
+  //     ElMessage.error(msg.value);
+  //   });

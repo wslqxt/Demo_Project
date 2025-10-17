@@ -1,12 +1,12 @@
 //用户登录的axios请求 封装
 import request from "@/axios/index.js";
-export const Login = (data) => {
+export const login = (data) => {
 //   return request.post("/login",);
      const res=request({
         method:'post',
-        url:'/user/login',
-        data:{username,password},
+        url:'/ha',
+        data:data,
      });
-     
      return res;
 };
+
