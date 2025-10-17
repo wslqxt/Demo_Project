@@ -418,25 +418,34 @@ const options = [
 ];
 
 // 模拟表格数据
-const tableData = ref([])
+const tableData = ref([]);
 
 // 动态生成完整的表格数据
 function generateTableData() {
   const data = [];
-  const categories = ['系统思维', '逻辑思维','创新精神'];
-  const subCategories = ['系统分析', '发散思维', '演绎推理'];
-  const time=[20,30,40,50];
-  const subsubCategories=['结构分析','逻辑分析','创新分析','问题求解'];
+  const categories = ["系统思维", "逻辑思维", "创新精神"];
+  const subCategories = ["系统分析", "发散思维", "演绎推理"];
+  const time = [20, 30, 40, 50];
+  const subsubCategories = ["结构分析", "逻辑分析", "创新分析", "问题求解"];
   for (let id = 1; id <= 30; id++) {
     data.push({
       ID: id,
       训练名称: `${id}号训练任务`,
-      训练分类: categories[Math.floor((id) % 3)], // 交替选择
-      训练分类2: subCategories[Math.floor((id) % 3)], // 循环选择
-      训练分类3: subsubCategories[Math.floor((id) % 4)], // 循环选择
+      训练分类: categories[Math.floor(id % 3)], // 交替选择
+      训练分类2: subCategories[Math.floor(id % 3)], // 循环选择
+      训练分类3: subsubCategories[Math.floor(id % 4)], // 循环选择
       时长: time[Math.floor(Math.random() * 3)], // 随机时长
-      训练时间: new Date(2024, 5, Math.floor(Math.random() * 20) + 1, Math.floor(Math.random() * 24), Math.floor(Math.random() * 60)).toISOString().slice(0, 19).replace('T', ' '), // 2024-06 随机时间
-      操作: ''
+      训练时间: new Date(
+        2024,
+        5,
+        Math.floor(Math.random() * 20) + 1,
+        Math.floor(Math.random() * 24),
+        Math.floor(Math.random() * 60)
+      )
+        .toISOString()
+        .slice(0, 19)
+        .replace("T", " "), // 2024-06 随机时间
+      操作: "",
     });
   }
   tableData.value = data;
@@ -444,24 +453,65 @@ function generateTableData() {
 
 // 初始化数据
 generateTableData();
-const Selects=ref({
-  diffculty: '',
-  module: '',
-  chapter: ''
-})
+const Selects = ref({
+  diffculty: "",
+  module: "",
+  chapter: "",
+});
 
+const optDiff = [
+  {
+    label: "一、语言及算法基础篇",
+    value: "L1",
+  },
+  {
+    label: "二、算法提高篇",
+    value: "L2",
+  },
+  {
+    label: "三、高手训练",
+    value: "L3",
+  },
+  {
+    label: "四、官方真题",
+    value: "L4",
+  },
+];
 
-const handleDiffChange=(p)=>{
+const optModule = [
+  {
+    label: "一、系统思维",
+    value: "L1-1",
+  },
+  {
+    label: "二、逻辑思维",
+    value: "L1-2",
+  },
+  {
+    label: "三、创新精神",
+    value: "L1-3",
+  },
+];
+
+const optChapter = [
+  {
+    label: "一、系统分析",
+    value: "L1-1-1",
+  },
+  {
+    label: "二、发散思维",
+    value: "L1-1-2",
+  },
+  {
+    label: "三、演绎推理",
+    value: "L1-1-3",
+  },
+];
+const handleDiffChange = (p) => {
   console.log("*************handleDiffChanged***********");
   console.log(p);
   console.log(Selects.value.diffculty);
-}
-
-
-
-
-
-
+};
 </script>
 
 <template>
@@ -473,17 +523,37 @@ const handleDiffChange=(p)=>{
     <!-- 工具栏 -->
     <div class="toolbar">
       <div class="toolbar-left">
-        <el-select v-model="value" placeholder="难度" style="width: 240px">
+        <el-select
+          v-model="value"
+          placeholder="难度"
+          style="width: 240px"
+          @change="handleDiffChange"
+        >
           <el-option
-            v-for="item in options"
+            v-for="item in optDiff"
             :key="item.value"
             :label="item.label"
             :value="item.value"
           />
         </el-select>
-        <el-button type="primary">新增训练</el-button>
-        <el-button type="default" style="margin-left: 12px">导出数据</el-button>
-        <el-button type="default" style="margin-left: 12px">导出报表</el-button>
+        <el-select v-model="value" placeholder="模块" style="width: 240px">
+          <el-option
+            v-for="item in optModule"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+        <el-select v-model="value" placeholder="章节" style="width: 240px">
+          <el-option
+            v-for="item in optChapter"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+        <!-- <el-button type="default" style="margin-left: 12px">导出报表</el-button> -->
+        <el-button type="primary">查询</el-button>
       </div>
       <div class="toolbar-right">
         <el-button type="default">批量操作</el-button>
@@ -511,7 +581,6 @@ const handleDiffChange=(p)=>{
   </div>
 </template>
 
-
 <style scoped>
 .container {
   display: flex;
@@ -521,7 +590,7 @@ const handleDiffChange=(p)=>{
 
 .header {
   height: 60px;
-  background-color: #e6f3ff;
+  background-color: #508cc5;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -534,7 +603,7 @@ const handleDiffChange=(p)=>{
 
 .toolbar {
   height: 60px;
-  background-color: #e6ffe6;
+  background-color: #f6e6ff;
   display: flex;
   justify-content: space-between;
   align-items: center;
